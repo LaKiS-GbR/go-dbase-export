@@ -27,8 +27,8 @@ type Table struct {
 	Columns   uint16
 	Records   uint32
 	FirstRow  int
-	RowLength string
-	FileSize  int64
+	RowLength uint16
+	FileSize  string
 	Modified  time.Time
 	Fields    map[string]Field
 	Data      []map[string]interface{}
@@ -130,13 +130,15 @@ func main() {
 
 		progresses[tablename].RenderBlank()
 		t := Table{
-			Name:     strings.ToUpper(tablename),
-			Columns:  tables[tablename].Header().ColumnsCount(),
-			Records:  tables[tablename].Header().RecordsCount(),
-			FileSize: tables[tablename].Header().FileSize(),
-			Modified: tables[tablename].Header().Modified(),
-			Fields:   make(map[string]Field),
-			Data:     make([]map[string]interface{}, 0),
+			Name:      strings.ToUpper(tablename),
+			Columns:   tables[tablename].Header().ColumnsCount(),
+			Records:   tables[tablename].Header().RecordsCount(),
+			FileSize:  ToByteString(int(tables[tablename].Header().FileSize())),
+			Modified:  tables[tablename].Header().Modified(),
+			RowLength: tables[tablename].Header().RowLength,
+			FirstRow:  int(tables[tablename].Header().FirstRow),
+			Fields:    make(map[string]Field),
+			Data:      make([]map[string]interface{}, 0),
 		}
 
 		for _, field := range schema[tablename] {
