@@ -1,6 +1,11 @@
 # 🦊 FoxPro/dBase exporter
 
-This is a simple tool to export data from dBase/FoxPro databases. 
+[![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://github.com/Valentin-Kaiser/go-dbase-export/blob/main/LICENSE)
+[![Linters](https://github.com/Valentin-Kaiser/go-dbase-export/workflows/Linters/badge.svg)](https://github.com/Valentin-Kaiser/go-dbase-export)
+[![CodeQL](https://github.com/Valentin-Kaiser/go-dbase-export/workflows/CodeQL/badge.svg)](https://github.com/Valentin-Kaiser/go-dbase-export)
+[![Go Report](https://goreportcard.com/badge/github.com/Valentin-Kaiser/go-dbase-export)](https://goreportcard.com/report/github.com/Valentin-Kaiser/go-dbase-export)
+
+**This is a simple tool to export data from dBase/FoxPro databases.**
 Based on [go-dbase](github.com/Valentin-Kaiser/go-dbase).
 
 ## Build
