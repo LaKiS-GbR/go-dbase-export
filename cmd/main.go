@@ -23,7 +23,7 @@ func main() {
 	// Flags
 	path := flag.String("path", "", "Path to the database file")
 	export := flag.String("export", exportPath, "Path to the export folder")
-	format := flag.String("format", "json", "Format type of the export (json, toml, yaml, csv)")
+	format := flag.String("format", "json", "Format type of the export (json, yaml/yml, toml, csv, xlsx)")
 	debugScreen := flag.Bool("debug-screen", false, "Log debug information to the screen")
 	debugFile := flag.String("debug-file", "", "Path to the debug file")
 
@@ -82,6 +82,8 @@ func main() {
 		progressbar.OptionEnableColorCodes(true),
 		progressbar.OptionSetItsString("records"),
 	)
+
+	fmt.Println()
 	serializationBar.RenderBlank()
 	for i, table := range dbSchema.TableReferences {
 		serializationBar.Describe(fmt.Sprintf("%-20.20s %-10.10s %10.10s", "Serialising table...", table.Name, fmt.Sprintf("(%d/%d)", i+1, len(dbSchema.TableReferences)+1)))
@@ -123,5 +125,6 @@ func main() {
 	serializationBar.Add(1)
 
 	elapsed := time.Since(start)
-	log.Printf("\n\nExport finished in %s", elapsed)
+	fmt.Println()
+	log.Printf("Export finished in %s", elapsed)
 }
