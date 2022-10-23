@@ -1,4 +1,4 @@
-# FoxProd/Base exporter
+# 🦊 FoxPro/dBase exporter
 
 This is a simple tool to export data from dBase/FoxPro databases. 
 Based on [go-dbase](github.com/Valentin-Kaiser/go-dbase).
