@@ -2,8 +2,6 @@ module github.com/Valentin-Kaiser/go-dbase-export
 
 go 1.19
 
-replace github.com/Valentin-Kaiser/go-dbase => ../go-dbase
-
 require (
 	github.com/360EntSecGroup-Skylar/excelize v1.4.1
 	github.com/Valentin-Kaiser/go-dbase v1.7.4
