@@ -12,6 +12,7 @@ import (
 
 	"github.com/Valentin-Kaiser/go-dbase-export/pkg/extract"
 	"github.com/Valentin-Kaiser/go-dbase-export/pkg/serialize"
+	"github.com/Valentin-Kaiser/go-dbase-export/pkg/server"
 	"github.com/Valentin-Kaiser/go-dbase/dbase"
 )
 
@@ -20,13 +21,21 @@ const exportPath = "./export/"
 func main() {
 	start := time.Now()
 	// Flags
+	run := flag.Bool("run", false, "Run the export in cli")
 	path := flag.String("path", "", "Path to the FoxPro/dBase database  file (DATABASE.DBC)")
 	export := flag.String("export", exportPath, "Path to the export folder")
 	format := flag.String("format", "json", "Format type of the export (json, yaml/yml, toml, csv, xlsx)")
 	debugScreen := flag.Bool("debug-screen", false, "Log debug information to the screen")
 	debugFile := flag.String("debug-file", "", "Path to the debug file")
+	port := flag.Int("port", 80, "Port to start the server on")
 
 	flag.Parse()
+
+	if !*run {
+		// Start the server
+		server.Start(*port)
+		return
+	}
 
 	if len(strings.TrimSpace(*path)) == 0 {
 		log.Fatal("Please provide a path to the database file")
@@ -66,7 +75,7 @@ func main() {
 		}
 	}
 
-	dbSchema, err := extract.Extract(*path, *export, *format)
+	dbSchema, err := extract.Extract(*path)
 	if err != nil {
 		log.Fatalf("Data extraction failed with error: %v", err)
 	}

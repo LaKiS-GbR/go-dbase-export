@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>FoxPro/dBase exporter</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦊</text></svg>">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #1e1e1e;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .card {
+            background-color: #2d2d2d;
+            border-radius: 5px;
+            padding: 20px;
+            width: 500px;
+            background-color: #fff;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        input {
+            padding: 10px 0;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #eee;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h1>🦊 FoxPro/dBase exporter</h1>
+            </div>
+
+            <p>Export your FoxPro/dBase database to JSON, YAML, TOML, CSV or XLSX.</p>
+            <form action="/export" method="post" enctype="multipart/form-data">
+                <input type="file" name="database" id="database" accept=".dbc,.dct,.dbf,.fpt,.DBC,.DCT,.DBF,.FPT" multiple class="custom-file-upload">
+                <select name="format" id="format">
+                    <option value="json">JSON</option>
+                    <option value="yaml">YAML</option>
+                    <option value="toml">TOML</option>
+                    <option value="csv">CSV</option>
+                    <option value="xlsx">XLSX</option>
+                </select>
+                <br>
+                <!-- Submit button -->
+                <button type="submit">Export</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

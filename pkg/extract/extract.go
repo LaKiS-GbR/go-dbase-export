@@ -13,7 +13,7 @@ import (
 	"github.com/schollz/progressbar/v3"
 )
 
-func Extract(path string, export string, format string) (*model.DatabaseSchema, error) {
+func Extract(path string) (*model.DatabaseSchema, error) {
 	defer func() {
 		// Add spacing to the end of the progress bar to make it look nicer
 		fmt.Printf("\n")
