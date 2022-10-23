@@ -1,0 +1,26 @@
+---
+
+name: Release
+
+on:
+  push:
+    branches: main
+    
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Calver Release
+        uses: StephaneBour/actions-calver@master
+        id: calver
+        with:
+          pre: false
+          release: true
+          date_format: "%Y.%V"
+          release_branch: main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
