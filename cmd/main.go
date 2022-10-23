@@ -13,7 +13,6 @@ import (
 	"github.com/Valentin-Kaiser/go-dbase-export/pkg/extract"
 	"github.com/Valentin-Kaiser/go-dbase-export/pkg/serialize"
 	"github.com/Valentin-Kaiser/go-dbase/dbase"
-	"github.com/schollz/progressbar/v3"
 )
 
 const exportPath = "./export/"
@@ -72,66 +71,8 @@ func main() {
 		log.Fatalf("Data extraction failed with error: %v", err)
 	}
 
-	serializationBar := progressbar.NewOptions(
-		len(dbSchema.TableReferences)+1,
-		progressbar.OptionShowCount(),
-		// progressbar.OptionShowIts(),
-		progressbar.OptionSetPredictTime(false),
-		progressbar.OptionSetWidth(30),
-		progressbar.OptionSetDescription(fmt.Sprintf("%-32.32s %10.10s", "Saving files ", fmt.Sprintf("(%d/%d)", 0, len(dbSchema.TableReferences)+1))),
-		progressbar.OptionEnableColorCodes(true),
-		progressbar.OptionSetItsString("records"),
-	)
-
-	fmt.Println()
-	err = serializationBar.RenderBlank()
-	if err != nil {
-		log.Fatalf("Rendering progress bar failed with error: %v", err)
-	}
-	for i, table := range dbSchema.TableReferences {
-		serializationBar.Describe(fmt.Sprintf("%-20.20s %-10.10s %10.10s", "Serialising table...", table.Name, fmt.Sprintf("(%d/%d)", i+1, len(dbSchema.TableReferences)+1)))
-		data, err := serialize.Serialize(table, *export, *format)
-		if err != nil {
-			log.Fatalf("Table serialization failed with error: %v", err)
-		}
-
-		serializationBar.Describe(fmt.Sprintf("%-20.20s %-10.10s %10.10s", "Saving table to file", table.Name, fmt.Sprintf("(%d/%d)", i+1, len(dbSchema.TableReferences)+1)))
-		path, err := serialize.GetPath(table, *export, *format)
-		if err != nil {
-			log.Fatalf("Getting path failed with error: %v", err)
-		}
-
-		err = serialize.SaveFile(path, data)
-		if err != nil {
-			log.Fatalf("Saving file failed with error: %v", err)
-		}
-
-		err = serializationBar.Add(1)
-		if err != nil {
-			log.Fatalf("Incrementing progress bar failed with error: %v", err)
-		}
-	}
-
-	serializationBar.Describe(fmt.Sprintf("%-20.20s %-10.10s %10.10s", "Serializing database", dbSchema.Name, fmt.Sprintf("(%d/%d)", len(dbSchema.TableReferences)+1, len(dbSchema.TableReferences)+1)))
-	data, err := serialize.Serialize(dbSchema, *export, *format)
-	if err != nil {
-		log.Fatalf("Database serialization failed with error: %v", err)
-	}
-
-	serializationBar.Describe(fmt.Sprintf("%-20.20s %-10.10s %10.10s", "Saving database", dbSchema.Name, fmt.Sprintf("(%d/%d)", len(dbSchema.TableReferences)+1, len(dbSchema.TableReferences)+1)))
-	dbExportPath, err := serialize.GetPath(dbSchema, *export, *format)
-	if err != nil {
-		log.Fatalf("Getting path failed with error: %v", err)
-	}
-
-	err = serialize.SaveFile(dbExportPath, data)
-	if err != nil {
-		log.Fatalf("Saving file failed with error: %v", err)
-	}
-	err = serializationBar.Add(1)
-	if err != nil {
-		log.Fatalf("Incrementing progress bar failed with error: %v", err)
-	}
+	// Serialize the schema
+	serialize.SerializeSchema(dbSchema, *export, *format)
 
 	elapsed := time.Since(start)
 	fmt.Println()

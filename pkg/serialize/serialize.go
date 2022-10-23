@@ -5,16 +5,81 @@ import (
 	"encoding/csv"
 	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 
 	"github.com/360EntSecGroup-Skylar/excelize"
 	"github.com/Valentin-Kaiser/go-dbase-export/pkg/model"
 	"github.com/pelletier/go-toml/v2"
+	"github.com/schollz/progressbar/v3"
 	"gopkg.in/yaml.v3"
 )
 
-func SaveFile(path string, data []byte) error {
+func SerializeSchema(dbSchema *model.DatabaseSchema, export string, format string) {
+	serializationBar := progressbar.NewOptions(
+		len(dbSchema.TableReferences)+1,
+		progressbar.OptionShowCount(),
+		// progressbar.OptionShowIts(),
+		progressbar.OptionSetPredictTime(false),
+		progressbar.OptionSetWidth(30),
+		progressbar.OptionSetDescription(fmt.Sprintf("%-32.32s %10.10s", "Saving files ", fmt.Sprintf("(%d/%d)", 0, len(dbSchema.TableReferences)+1))),
+		progressbar.OptionEnableColorCodes(true),
+		progressbar.OptionSetItsString("records"),
+	)
+
+	fmt.Println()
+	err := serializationBar.RenderBlank()
+	if err != nil {
+		log.Fatalf("Rendering progress bar failed with error: %v", err)
+	}
+	for i, table := range dbSchema.TableReferences {
+		serializationBar.Describe(fmt.Sprintf("%-20.20s %-10.10s %10.10s", "Serialising table...", table.Name, fmt.Sprintf("(%d/%d)", i+1, len(dbSchema.TableReferences)+1)))
+		data, err := serialize(table, export, format)
+		if err != nil {
+			log.Fatalf("Table serialization failed with error: %v", err)
+		}
+
+		serializationBar.Describe(fmt.Sprintf("%-20.20s %-10.10s %10.10s", "Saving table to file", table.Name, fmt.Sprintf("(%d/%d)", i+1, len(dbSchema.TableReferences)+1)))
+		path, err := getPath(table, export, format)
+		if err != nil {
+			log.Fatalf("Getting path failed with error: %v", err)
+		}
+
+		err = saveFile(path, data)
+		if err != nil {
+			log.Fatalf("Saving file failed with error: %v", err)
+		}
+
+		err = serializationBar.Add(1)
+		if err != nil {
+			log.Fatalf("Incrementing progress bar failed with error: %v", err)
+		}
+	}
+
+	serializationBar.Describe(fmt.Sprintf("%-20.20s %-10.10s %10.10s", "Serializing database", dbSchema.Name, fmt.Sprintf("(%d/%d)", len(dbSchema.TableReferences)+1, len(dbSchema.TableReferences)+1)))
+	data, err := serialize(dbSchema, export, format)
+	if err != nil {
+		log.Fatalf("Database serialization failed with error: %v", err)
+	}
+
+	serializationBar.Describe(fmt.Sprintf("%-20.20s %-10.10s %10.10s", "Saving database", dbSchema.Name, fmt.Sprintf("(%d/%d)", len(dbSchema.TableReferences)+1, len(dbSchema.TableReferences)+1)))
+	dbExportPath, err := getPath(dbSchema, export, format)
+	if err != nil {
+		log.Fatalf("Getting path failed with error: %v", err)
+	}
+
+	err = saveFile(dbExportPath, data)
+	if err != nil {
+		log.Fatalf("Saving file failed with error: %v", err)
+	}
+	err = serializationBar.Add(1)
+	if err != nil {
+		log.Fatalf("Incrementing progress bar failed with error: %v", err)
+	}
+}
+
+func saveFile(path string, data []byte) error {
 	err := os.WriteFile(path, data, 0644)
 	if err != nil {
 		return err
@@ -22,7 +87,7 @@ func SaveFile(path string, data []byte) error {
 	return nil
 }
 
-func GetPath(v interface{}, path, format string) (string, error) {
+func getPath(v interface{}, path, format string) (string, error) {
 	filename := ""
 	switch v := v.(type) {
 	case *model.DatabaseSchema:
@@ -36,7 +101,7 @@ func GetPath(v interface{}, path, format string) (string, error) {
 	return filepath.Join(path, filename), nil
 }
 
-func Serialize(v interface{}, exportPath string, format string) ([]byte, error) {
+func serialize(v interface{}, exportPath string, format string) ([]byte, error) {
 	data, err := serializeFormat(v, exportPath, format)
 	if err != nil {
 		return nil, err
