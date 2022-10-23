@@ -5,16 +5,19 @@ import (
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/Valentin-Kaiser/go-dbase-export/pkg/config"
 )
 
 // Start the server
-func Start(port int) {
+func Start() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", IndexHandler)
-	mux.HandleFunc("/export", ExportHandler)
+	mux.HandleFunc("/export/", ExportHandler)
+	mux.HandleFunc("/download/", DownloadHandler)
 
 	server := http.Server{
-		Addr:              fmt.Sprintf(":%v", port),
+		Addr:              fmt.Sprintf(":%v", config.GetConfig().Port),
 		Handler:           mux,
 		ReadHeaderTimeout: 5 * time.Second,
 	}

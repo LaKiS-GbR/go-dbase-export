@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>FoxPro/dBase exporter</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦊</text></svg>">
+    <meta http-equiv="refresh" content="3">
     <style>
         body {
             display: flex;
@@ -12,6 +13,8 @@
             align-items: center;
             height: 100vh;
             background-color: #1e1e1e;
+            font: 1em sans-serif;
+            margin: 0;
         }
 
         .container {
@@ -49,6 +52,8 @@
         }
 
         button {
+            /* full width */
+            width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -60,6 +65,19 @@
             background-color: #eee;
         }
 
+        .download-section {
+            /* Max Height and scrollable */
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        ul, li {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
     </style>
 </head>
 
@@ -69,9 +87,8 @@
             <div class="card-header">
                 <h1>🦊 FoxPro/dBase exporter</h1>
             </div>
-
-            <p>Export your FoxPro/dBase database to JSON, YAML, TOML, CSV or XLSX.</p>
-            <form action="/export" method="post" enctype="multipart/form-data">
+            <p>Export your database to JSON, YAML, TOML, CSV or XLSX.</p>
+            <!-- <form action="/export" method="post" enctype="multipart/form-data">
                 <input type="file" name="database" id="database" accept=".dbc,.dct,.dbf,.fpt,.DBC,.DCT,.DBF,.FPT" multiple class="custom-file-upload">
                 <select name="format" id="format">
                     <option value="json">JSON</option>
@@ -81,9 +98,32 @@
                     <option value="xlsx">XLSX</option>
                 </select>
                 <br>
-                <!-- Submit button -->
-                <button type="submit">Export</button>
-            </form>
+                
+                <button type="submit">Upload</button>
+            </form> -->
+            {{if .Error}}
+            <p></p>
+            <p style="color: red;">{{.Error}}</p>
+            {{end}}
+            {{if .Exported}}
+
+            <p>Last export: {{.Time.Format "15:04:05 02-01-2006"}}</p>
+            <p>Duration: {{.Duration}}</p>
+            
+            <div class="download-section">
+                <ul>
+                    {{range .Repository}}
+                    <li><a href="/download/?file={{.}}" download>{{.}}</a></li>
+                    {{end}}
+                </ul>
+            </div>
+
+            {{end}}
+            {{if .Running}}
+            <p style="color: green;">Exporting...</p>
+            {{else}}
+            <button onclick="window.location.href='/export';">Export</button>
+            {{end}}
         </div>
     </div>
 </body>

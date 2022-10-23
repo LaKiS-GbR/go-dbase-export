@@ -86,10 +86,6 @@ func Extract(path string) (*model.DatabaseSchema, error) {
 		}
 
 		if table.Records == 0 {
-			err = progresses[tablename].Finish()
-			if err != nil {
-				log.Printf("Error finishing progress bar: %v", err)
-			}
 			continue
 		}
 

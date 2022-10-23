@@ -77,6 +77,8 @@ func SerializeSchema(dbSchema *model.DatabaseSchema, export string, format strin
 	if err != nil {
 		log.Fatalf("Incrementing progress bar failed with error: %v", err)
 	}
+
+	fmt.Println("\nDone!")
 }
 
 func saveFile(path string, data []byte) error {
