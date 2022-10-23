@@ -2,6 +2,7 @@ package extract
 
 import (
 	"fmt"
+	"log"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -59,7 +60,10 @@ func Extract(path string, export string, format string) (*model.DatabaseSchema, 
 
 	for _, tablename := range keys {
 		fmt.Println() // new line for progress bar to display correctly one per line
-		progresses[tablename].RenderBlank()
+		err := progresses[tablename].RenderBlank()
+		if err != nil {
+			log.Printf("Error rendering blank progress bar: %v", err)
+		}
 		table := model.Table{
 			Name:      strings.ToUpper(tablename),
 			Columns:   tables[tablename].Header().ColumnsCount(),
@@ -82,12 +86,18 @@ func Extract(path string, export string, format string) (*model.DatabaseSchema, 
 		}
 
 		if table.Records == 0 {
-			progresses[tablename].Finish()
+			err = progresses[tablename].Finish()
+			if err != nil {
+				log.Printf("Error finishing progress bar: %v", err)
+			}
 			continue
 		}
 
 		for !tables[tablename].EOF() {
-			progresses[tablename].Add(1)
+			err = progresses[tablename].Add(1)
+			if err != nil {
+				log.Printf("Error incrementing progress bar: %v", err)
+			}
 			row, err := tables[tablename].Next()
 			if err != nil {
 				// Skip faulty data
@@ -109,19 +119,4 @@ func Extract(path string, export string, format string) (*model.DatabaseSchema, 
 	duration := time.Since(start)
 	databaseSchema.Generated = duration
 	return databaseSchema, nil
-}
-
-// ToByteString returns the number of bytes as a string with a unit
-func toByteString(b int) string {
-	const unit = 1000
-	if b < unit {
-		return fmt.Sprintf("%d B", b)
-	}
-	div, exp := int64(unit), 0
-	for n := b / unit; n >= unit; n /= unit {
-		div *= unit
-		exp++
-	}
-	return fmt.Sprintf("%.1f %cB",
-		float64(b)/float64(div), "kMGTPE"[exp])
 }

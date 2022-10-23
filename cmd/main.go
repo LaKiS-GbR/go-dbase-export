@@ -84,7 +84,10 @@ func main() {
 	)
 
 	fmt.Println()
-	serializationBar.RenderBlank()
+	err = serializationBar.RenderBlank()
+	if err != nil {
+		log.Fatalf("Rendering progress bar failed with error: %v", err)
+	}
 	for i, table := range dbSchema.TableReferences {
 		serializationBar.Describe(fmt.Sprintf("%-20.20s %-10.10s %10.10s", "Serialising table...", table.Name, fmt.Sprintf("(%d/%d)", i+1, len(dbSchema.TableReferences)+1)))
 		data, err := serialize.Serialize(table, *export, *format)
@@ -103,7 +106,10 @@ func main() {
 			log.Fatalf("Saving file failed with error: %v", err)
 		}
 
-		serializationBar.Add(1)
+		err = serializationBar.Add(1)
+		if err != nil {
+			log.Fatalf("Incrementing progress bar failed with error: %v", err)
+		}
 	}
 
 	serializationBar.Describe(fmt.Sprintf("%-20.20s %-10.10s %10.10s", "Serializing database", dbSchema.Name, fmt.Sprintf("(%d/%d)", len(dbSchema.TableReferences)+1, len(dbSchema.TableReferences)+1)))
@@ -122,7 +128,10 @@ func main() {
 	if err != nil {
 		log.Fatalf("Saving file failed with error: %v", err)
 	}
-	serializationBar.Add(1)
+	err = serializationBar.Add(1)
+	if err != nil {
+		log.Fatalf("Incrementing progress bar failed with error: %v", err)
+	}
 
 	elapsed := time.Since(start)
 	fmt.Println()

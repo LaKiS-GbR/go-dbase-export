@@ -5,7 +5,7 @@ import "time"
 type DatabaseSchema struct {
 	Name            string
 	Tables          map[string]string
-	TableReferences []*Table `json:"-";yaml:"-";toml:"-"`
+	TableReferences []*Table `json:"-" yaml:"-" toml:"-"`
 	Generated       time.Duration
 }
 
