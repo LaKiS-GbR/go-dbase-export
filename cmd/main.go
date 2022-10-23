@@ -20,7 +20,7 @@ const exportPath = "./export/"
 func main() {
 	start := time.Now()
 	// Flags
-	path := flag.String("path", "", "Path to the database file")
+	path := flag.String("path", "", "Path to the FoxPro/dBase database  file (DATABASE.DBC)")
 	export := flag.String("export", exportPath, "Path to the export folder")
 	format := flag.String("format", "json", "Format type of the export (json, yaml/yml, toml, csv, xlsx)")
 	debugScreen := flag.Bool("debug-screen", false, "Log debug information to the screen")
