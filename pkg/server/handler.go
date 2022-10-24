@@ -18,8 +18,10 @@ var RepositoryName string
 //go:embed template/index.html
 var templates embed.FS
 
+// Only one job can run at a time
 var runningJob *job.Job
 
+// status is the data structure for the index template
 type status struct {
 	Filename   string
 	Exported   bool
@@ -46,11 +48,14 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if runningJob == nil {
-		tmpl.Execute(w, status{Running: false})
+		err := tmpl.Execute(w, status{Running: false})
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 		return
 	}
 
-	// Append Repository if an job has run
+	// Append export repository if an job has run successfully
 	var repository []string
 	if runningJob != nil && runningJob.IsFinished() && runningJob.GetError() == nil {
 		files, err := os.ReadDir(config.GetConfig().RepositoryPath)
@@ -64,7 +69,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Render the template
-	tmpl.Execute(w, status{
+	err = tmpl.Execute(w, status{
 		Running:    !runningJob.IsFinished(),
 		Error:      runningJob.GetError(),
 		Exported:   runningJob != nil && runningJob.IsFinished() && runningJob.GetError() == nil,
@@ -73,6 +78,10 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		Duration:   runningJob.Elapsed,
 		Filename:   config.GetConfig().DBPath,
 	})
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 func ExportHandler(w http.ResponseWriter, r *http.Request) {
@@ -112,13 +121,14 @@ func DownloadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	path := filepath.Join(config.GetConfig().RepositoryPath, fileName)
 	// Check if the file exists
-	if _, err := os.Stat(filepath.Join(config.GetConfig().RepositoryPath, fileName)); os.IsNotExist(err) {
+	if _, err := os.Stat(path); os.IsNotExist(err) {
 		http.Error(w, "File does not exist", http.StatusNotFound)
 		return
 	}
 
 	// serve the file
 	http.Header.Add(w.Header(), "Content-Disposition", "attachment; filename="+fileName)
-	http.ServeFile(w, r, filepath.Join(config.GetConfig().RepositoryPath, fileName))
+	http.ServeFile(w, r, path)
 }
