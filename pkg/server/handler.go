@@ -119,5 +119,6 @@ func DownloadHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// serve the file
+	http.Header.Add(w.Header(), "Content-Disposition", "attachment; filename="+fileName)
 	http.ServeFile(w, r, filepath.Join(config.GetConfig().RepositoryPath, fileName))
 }
