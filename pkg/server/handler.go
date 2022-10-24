@@ -64,7 +64,6 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		for _, file := range files {
 			repository = append(repository, file.Name())
 		}
-
 	}
 
 	// Render the template
