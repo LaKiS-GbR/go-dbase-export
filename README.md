@@ -21,7 +21,7 @@ go build -o dbase-exporter
 dbase-exporter -h
 
 Usage of dbase-exporter:
--debug-file string
+  -debug-file string
         Path to the debug file
   -debug-screen
         Log debug information to the screen
@@ -30,5 +30,9 @@ Usage of dbase-exporter:
   -format string
         Format type of the export (json, yaml/yml, toml, csv, xlsx) (default "json")
   -path string
-        Path to the database file
+        Path to the FoxPro/dBase database  file (DATABASE.DBC)
+  -repository string
+        Path to the repository folder (Used to store the uploaded files) (default "./repository")
+  -run
+        Run the export in cli
 ```
