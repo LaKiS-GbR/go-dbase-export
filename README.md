@@ -17,6 +17,10 @@ go build -o dbase-exporter
 
 ## Usage
 
+The application can be used as a CLI tool or via the web browser.
+
+> If executed without any parameters, the application starts with web server and the export can only be executed via it. For configuration, a file is created in which the port, database path and export path can be entered.
+
 ```txt
 dbase-exporter -h
 
