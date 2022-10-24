@@ -48,7 +48,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if runningJob == nil {
-		err := tmpl.Execute(w, status{Running: false})
+		err := tmpl.Execute(w, status{Running: false, Filename: config.GetConfig().DBPath})
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}

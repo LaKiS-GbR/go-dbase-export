@@ -14,18 +14,13 @@ import (
 )
 
 func Extract(path string) (*model.DatabaseSchema, error) {
-	defer func() {
-		// Add spacing to the end of the progress bar to make it look nicer
-		fmt.Printf("\n")
-	}()
-
 	start := time.Now()
 	db, err := dbase.OpenDatabase(&dbase.Config{
 		Filename:   path,
 		TrimSpaces: true,
 	})
 	if err != nil {
-		panic(dbase.GetErrorTrace(err))
+		return nil, err
 	}
 	defer db.Close()
 
@@ -43,6 +38,11 @@ func Extract(path string) (*model.DatabaseSchema, error) {
 		keys = append(keys, table)
 	}
 	sort.Strings(keys)
+
+	defer func() {
+		// Add spacing to the end of the progress bar to make it look nicer
+		fmt.Printf("\n")
+	}()
 
 	progresses := make(map[string]*progressbar.ProgressBar)
 	for i, name := range keys {

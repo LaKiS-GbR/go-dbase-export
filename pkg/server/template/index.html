@@ -4,8 +4,9 @@
 <head>
     <meta charset="utf-8">
     <title>FoxPro/dBase exporter</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦊</text></svg>">
-    <meta http-equiv="refresh" content="3">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦊</text></svg>">
+    <meta http-equiv="refresh" content="15">
     <style>
         body {
             display: flex;
@@ -15,6 +16,7 @@
             background-color: #1e1e1e;
             font: 1em sans-serif;
             margin: 0;
+            color: #fff;
         }
 
         .container {
@@ -29,7 +31,7 @@
             border-radius: 5px;
             padding: 20px;
             width: 500px;
-            background-color: #fff;
+            /* background-color: #333; */
         }
 
         .card-header {
@@ -55,9 +57,9 @@
             /* full width */
             width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid rgb(140, 140, 140);
             border-radius: 5px;
-            background-color: #fff;
+            background-color: rgb(130, 130, 130);
             cursor: pointer;
             margin-bottom: 4px;
         }
@@ -71,14 +73,50 @@
             max-height: 200px;
             overflow-y: auto;
             margin-bottom: 20px;
+            /* scroll bar styling */
+            /* scrollbar-color: #333 #2d2d2d;
+            scrollbar-width: thin; */
         }
 
-        ul, li {
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 5px grey;
+            border-radius: 10px;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #000;
+            border-radius: 10px;
+        }
+
+        .file-download {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px;
+            margin: 2px;
+            border: 1px solid rgb(140, 140, 140);
+            border-radius: 5px;
+            margin-bottom: 4px;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .file-download:hover {
+            background-color: #eee;
+            color: #000;
+        }
+
+        ul,
+        li {
             list-style: none;
             padding: 0;
             margin: 0;
         }
-
     </style>
 </head>
 
@@ -88,7 +126,9 @@
             <div class="card-header">
                 <h1>🦊 FoxPro/dBase exporter</h1>
             </div>
-            <p>Export your database to JSON, YAML, TOML, CSV or XLSX.</p>
+            {{if not .Running}}
+            <p style="text-align: center;">Export your database {{.Filename}}</p>
+            {{end}}
             {{if .Error}}
             <p></p>
             <p style="color: red;">{{.Error}}</p>
@@ -97,11 +137,11 @@
             {{if .Exported}}
             <p>Last export: {{.Time.Format "15:04:05 02-01-2006"}}</p>
             <p>Duration: {{.Duration}}</p>
-            
+
             <div class="download-section">
                 <ul>
                     {{range .Repository}}
-                    <li><a href="/download/?file={{.}}" download>{{.}}</a></li>
+                    <li><a class="file-download" href="/download/?file={{.}}" download>{{.}}</a></li>
                     {{end}}
                 </ul>
             </div>
@@ -111,11 +151,11 @@
             {{if .Running}}
             <p style="color: green;">Exporting {{.Filename}}... </p>
             {{else}}
-            <button onclick="window.location.href='/export?format=json';">Export JSON</button>
-            <button onclick="window.location.href='/export?format=yaml';">Export YAML</button>
-            <button onclick="window.location.href='/export?format=toml';">Export TOML</button>
-            <button onclick="window.location.href='/export?format=csv';">Export CSV</button>
-            <button onclick="window.location.href='/export?format=xlsx';">Export XLSX</button>
+            <button onclick="window.location.href='/export?format=json';">JSON</button>
+            <button onclick="window.location.href='/export?format=yaml';">YAML</button>
+            <button onclick="window.location.href='/export?format=toml';">TOML</button>
+            <button onclick="window.location.href='/export?format=csv';">CSV</button>
+            <button onclick="window.location.href='/export?format=xlsx';">XLSX</button>
             {{end}}
         </div>
     </div>
