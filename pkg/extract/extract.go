@@ -13,19 +13,14 @@ import (
 	"github.com/schollz/progressbar/v3"
 )
 
-func Extract(path string, export string, format string) (*model.DatabaseSchema, error) {
-	defer func() {
-		// Add spacing to the end of the progress bar to make it look nicer
-		fmt.Printf("\n")
-	}()
-
+func Extract(path string) (*model.DatabaseSchema, error) {
 	start := time.Now()
 	db, err := dbase.OpenDatabase(&dbase.Config{
 		Filename:   path,
 		TrimSpaces: true,
 	})
 	if err != nil {
-		panic(dbase.GetErrorTrace(err))
+		return nil, err
 	}
 	defer db.Close()
 
@@ -43,6 +38,11 @@ func Extract(path string, export string, format string) (*model.DatabaseSchema, 
 		keys = append(keys, table)
 	}
 	sort.Strings(keys)
+
+	defer func() {
+		// Add spacing to the end of the progress bar to make it look nicer
+		fmt.Printf("\n")
+	}()
 
 	progresses := make(map[string]*progressbar.ProgressBar)
 	for i, name := range keys {
@@ -86,10 +86,6 @@ func Extract(path string, export string, format string) (*model.DatabaseSchema, 
 		}
 
 		if table.Records == 0 {
-			err = progresses[tablename].Finish()
-			if err != nil {
-				log.Printf("Error finishing progress bar: %v", err)
-			}
 			continue
 		}
 
