@@ -109,7 +109,7 @@
             {{end}}
 
             {{if .Running}}
-            <p style="color: green;">Exporting...</p>
+            <p style="color: green;">Exporting {{.Filename}}... </p>
             {{else}}
             <button onclick="window.location.href='/export?format=json';">Export JSON</button>
             <button onclick="window.location.href='/export?format=yaml';">Export YAML</button>

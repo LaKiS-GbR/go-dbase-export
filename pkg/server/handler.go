@@ -21,6 +21,7 @@ var templates embed.FS
 var runningJob *job.Job
 
 type status struct {
+	Filename   string
 	Exported   bool
 	Running    bool
 	Error      error
@@ -70,6 +71,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		Repository: repository,
 		Time:       runningJob.Time,
 		Duration:   runningJob.Elapsed,
+		Filename:   config.GetConfig().DBPath,
 	})
 }
 
