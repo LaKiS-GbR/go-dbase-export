@@ -3,7 +3,6 @@ package server
 import (
 	"bytes"
 	"embed"
-	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -35,14 +34,12 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	// Get the index template
 	index, err := templates.ReadFile("template/index.html")
 	if err != nil {
-		fmt.Fprintf(w, "Error: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	tmpl, err := template.New("index").Parse(string(index))
 	if err != nil {
-		fmt.Fprintf(w, "Error: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -54,10 +51,9 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Append Repository if an job has run
 	var repository []string
-	if runningJob != nil && runningJob.IsFinished() {
+	if runningJob != nil && runningJob.IsFinished() && runningJob.GetError() == nil {
 		files, err := os.ReadDir(config.GetConfig().RepositoryPath)
 		if err != nil {
-			fmt.Fprintf(w, "Error: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -70,7 +66,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, status{
 		Running:    !runningJob.IsFinished(),
 		Error:      runningJob.GetError(),
-		Exported:   runningJob != nil && runningJob.IsFinished(),
+		Exported:   runningJob != nil && runningJob.IsFinished() && runningJob.GetError() == nil,
 		Repository: repository,
 		Time:       runningJob.Time,
 		Duration:   runningJob.Elapsed,
@@ -83,11 +79,24 @@ func ExportHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Get the format from the url arg
+	format := r.URL.Query().Get("format")
+	if len(format) == 0 {
+		http.Error(w, "Please provide a format", http.StatusInternalServerError)
+		return
+	}
+
+	// Clean the repository
+	if err := os.RemoveAll(config.GetConfig().RepositoryPath); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	runningJob = job.New(bytes.NewBuffer(nil), nil)
 	go runningJob.Run(
 		config.GetConfig().DBPath,
 		config.GetConfig().RepositoryPath,
-		"json",
+		format,
 	)
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)

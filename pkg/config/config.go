@@ -32,11 +32,6 @@ func GetConfig() *Config {
 }
 
 func initConfig() error {
-	instance = &Config{
-		Port:           80,
-		DBPath:         "",
-		RepositoryPath: "./repository",
-	}
 
 	if _, err := os.Stat("./config/config.yaml"); err != nil {
 		err = createConfig()
@@ -62,7 +57,7 @@ func initConfig() error {
 
 func createConfig() error {
 	config := Config{
-		Port:           80,
+		Port:           8888,
 		DBPath:         "",
 		RepositoryPath: "./repository",
 	}
@@ -92,7 +87,5 @@ func createConfig() error {
 	}
 
 	log.Printf("[config] created config.yaml path: %s", pth)
-	log.Println("[config] exiting...")
-	os.Exit(0)
 	return nil
 }

@@ -59,6 +59,7 @@
             border-radius: 5px;
             background-color: #fff;
             cursor: pointer;
+            margin-bottom: 4px;
         }
 
         button:hover {
@@ -88,25 +89,12 @@
                 <h1>🦊 FoxPro/dBase exporter</h1>
             </div>
             <p>Export your database to JSON, YAML, TOML, CSV or XLSX.</p>
-            <!-- <form action="/export" method="post" enctype="multipart/form-data">
-                <input type="file" name="database" id="database" accept=".dbc,.dct,.dbf,.fpt,.DBC,.DCT,.DBF,.FPT" multiple class="custom-file-upload">
-                <select name="format" id="format">
-                    <option value="json">JSON</option>
-                    <option value="yaml">YAML</option>
-                    <option value="toml">TOML</option>
-                    <option value="csv">CSV</option>
-                    <option value="xlsx">XLSX</option>
-                </select>
-                <br>
-                
-                <button type="submit">Upload</button>
-            </form> -->
             {{if .Error}}
             <p></p>
             <p style="color: red;">{{.Error}}</p>
             {{end}}
-            {{if .Exported}}
 
+            {{if .Exported}}
             <p>Last export: {{.Time.Format "15:04:05 02-01-2006"}}</p>
             <p>Duration: {{.Duration}}</p>
             
@@ -119,10 +107,15 @@
             </div>
 
             {{end}}
+
             {{if .Running}}
             <p style="color: green;">Exporting...</p>
             {{else}}
-            <button onclick="window.location.href='/export';">Export</button>
+            <button onclick="window.location.href='/export?format=json';">Export JSON</button>
+            <button onclick="window.location.href='/export?format=yaml';">Export YAML</button>
+            <button onclick="window.location.href='/export?format=toml';">Export TOML</button>
+            <button onclick="window.location.href='/export?format=csv';">Export CSV</button>
+            <button onclick="window.location.href='/export?format=xlsx';">Export XLSX</button>
             {{end}}
         </div>
     </div>

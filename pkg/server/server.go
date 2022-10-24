@@ -13,8 +13,10 @@ import (
 func Start() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", IndexHandler)
-	mux.HandleFunc("/export/", ExportHandler)
-	mux.HandleFunc("/download/", DownloadHandler)
+	mux.HandleFunc("/export", ExportHandler)
+	mux.HandleFunc("/download", DownloadHandler)
+
+	log.Printf("Starting server on http://localhost:%v", config.GetConfig().Port)
 
 	server := http.Server{
 		Addr:              fmt.Sprintf(":%v", config.GetConfig().Port),

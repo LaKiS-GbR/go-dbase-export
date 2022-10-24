@@ -17,7 +17,7 @@ go build -o dbase-exporter
 
 ## Usage
 
-```bash
+```txt
 dbase-exporter -h
 
 Usage of dbase-exporter:
