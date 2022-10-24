@@ -32,7 +32,6 @@ func GetConfig() *Config {
 }
 
 func initConfig() error {
-
 	if _, err := os.Stat("./config/config.yaml"); err != nil {
 		err = createConfig()
 		if err != nil {
