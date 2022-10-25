@@ -16,8 +16,8 @@ var once sync.Once
 type Config struct {
 	Port           uint   `yaml:"Port"`
 	DBPath         string `yaml:"OMSDBPath"`
-	RepositoryPath string `yaml:"RepositoryPath"` // Export path for the files
-
+	RepositoryPath string `yaml:"RepositoryPath"` // Path to the repository where the uploaded files are stored
+	ExportPath     string `yaml:"ExportPath"`     // Path to the export folder
 }
 
 func GetConfig() *Config {
@@ -59,6 +59,7 @@ func createConfig() error {
 		Port:           8888,
 		DBPath:         "",
 		RepositoryPath: "./repository",
+		ExportPath:     "./export",
 	}
 
 	data, err := yaml.Marshal(&config)

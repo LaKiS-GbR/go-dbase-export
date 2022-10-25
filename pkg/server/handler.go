@@ -58,7 +58,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	// Append export repository if an job has run successfully
 	var repository []string
 	if runningJob != nil && runningJob.IsFinished() && runningJob.GetError() == nil {
-		files, err := os.ReadDir(config.GetConfig().RepositoryPath)
+		files, err := os.ReadDir(config.GetConfig().ExportPath)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -98,7 +98,7 @@ func ExportHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Clean the repository
-	if err := os.RemoveAll(config.GetConfig().RepositoryPath); err != nil {
+	if err := os.RemoveAll(config.GetConfig().ExportPath); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -106,7 +106,7 @@ func ExportHandler(w http.ResponseWriter, r *http.Request) {
 	runningJob = job.New(bytes.NewBuffer(nil), nil)
 	go runningJob.Run(
 		config.GetConfig().DBPath,
-		config.GetConfig().RepositoryPath,
+		config.GetConfig().ExportPath,
 		format,
 	)
 
@@ -121,7 +121,7 @@ func DownloadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	path := filepath.Join(config.GetConfig().RepositoryPath, fileName)
+	path := filepath.Join(config.GetConfig().ExportPath, fileName)
 	// Check if the file exists
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		http.Error(w, "File does not exist", http.StatusNotFound)
