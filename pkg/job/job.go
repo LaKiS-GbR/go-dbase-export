@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Valentin-Kaiser/go-dbase-export/pkg/extract"
-	"github.com/Valentin-Kaiser/go-dbase-export/pkg/serialize"
+	"github.com/LaKiS-GbR/go-dbase-export/pkg/extract"
+	"github.com/LaKiS-GbR/go-dbase-export/pkg/serialize"
 )
 
 type Job struct {

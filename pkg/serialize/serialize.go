@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 
 	"github.com/360EntSecGroup-Skylar/excelize"
-	"github.com/Valentin-Kaiser/go-dbase-export/pkg/model"
+	"github.com/LaKiS-GbR/go-dbase-export/pkg/model"
 	"github.com/pelletier/go-toml/v2"
 	"github.com/schollz/progressbar/v3"
 	"gopkg.in/yaml.v3"

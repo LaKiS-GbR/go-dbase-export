@@ -1,4 +1,4 @@
-module github.com/Valentin-Kaiser/go-dbase-export
+module github.com/LaKiS-GbR/go-dbase-export
 
 go 1.19
 

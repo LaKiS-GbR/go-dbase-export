@@ -9,8 +9,8 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/Valentin-Kaiser/go-dbase-export/pkg/config"
-	"github.com/Valentin-Kaiser/go-dbase-export/pkg/job"
+	"github.com/LaKiS-GbR/go-dbase-export/pkg/config"
+	"github.com/LaKiS-GbR/go-dbase-export/pkg/job"
 )
 
 var RepositoryName string

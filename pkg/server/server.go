@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Valentin-Kaiser/go-dbase-export/pkg/config"
+	"github.com/LaKiS-GbR/go-dbase-export/pkg/config"
 )
 
 // Start the server

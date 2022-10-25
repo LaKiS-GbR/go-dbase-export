@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Valentin-Kaiser/go-dbase-export/pkg/model"
+	"github.com/LaKiS-GbR/go-dbase-export/pkg/model"
 	"github.com/Valentin-Kaiser/go-dbase/dbase"
 	"github.com/schollz/progressbar/v3"
 )
