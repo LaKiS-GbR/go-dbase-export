@@ -19,12 +19,10 @@ func main() {
 	format := flag.String("format", "json", "Format type of the export (json, yaml/yml, toml, csv, xlsx)")
 	debugScreen := flag.Bool("debug-screen", false, "Log debug information to the screen")
 	debugFile := flag.String("debug-file", "", "Path to the debug file")
-	repository := flag.String("repository", "./repository", "Path to the repository folder (Used to store the uploaded files)")
 
 	flag.Parse()
 
 	if !*run {
-		server.RepositoryName = *repository
 		// Start the server
 		server.Start()
 		return
