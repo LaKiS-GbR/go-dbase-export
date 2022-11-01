@@ -5,8 +5,8 @@ import (
 	"io"
 	"os"
 
-	"github.com/LaKiS-GbR/go-dbase-export
-	"github.com/LaKiS-GbR/go-dbase-export
+	"github.com/LaKiS-GbR/go-dbase-export/pkg/job"
+	"github.com/LaKiS-GbR/go-dbase-export/pkg/server"
 )
 
 const exportPath = "./export/"
