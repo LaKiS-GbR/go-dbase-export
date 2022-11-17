@@ -4,8 +4,14 @@
 [![Linters](https://github.com/LaKiS-GbR/go-dbase-export/workflows/Linters/badge.svg)](https://github.com/LaKiS-GbR/go-dbase-export)
 [![CodeQL](https://github.com/LaKiS-GbR/go-dbase-export/workflows/CodeQL/badge.svg)](https://github.com/LaKiS-GbR/go-dbase-export)
 
-**This is a simple tool to export data from dBase/FoxPro databases.**
-Based on [go-dbase](github.com/Valentin-Kaiser/go-dbase).
+This application is a simple tool to convert data from dBase/FoxPro databases to more modern formats. It can be operated in the CLI or via web interface. It is based on the free Golang library [go-dbase](github.com/Valentin-Kaiser/go-dbase) by LaKiS co-founder Valentin Kaiser.
+
+<table style="border:none;">
+  <tr>
+    <td><img src="https://mvz-bietigheim.de/wp-content/uploads/2017/10/placeholder-image4.jpg" width="480"/></td>
+    <td><img src="https://mvz-bietigheim.de/wp-content/uploads/2017/10/placeholder-image4.jpg" width="480"/></td>
+  </tr>
+</table>
 
 ## Build
 
