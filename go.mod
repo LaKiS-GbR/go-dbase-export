@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/360EntSecGroup-Skylar/excelize v1.4.1
 	github.com/Valentin-Kaiser/go-dbase v1.7.7
-	github.com/pelletier/go-toml/v2 v2.0.7
+	github.com/pelletier/go-toml/v2 v2.0.9
 	github.com/schollz/progressbar/v3 v3.11.0
 	gopkg.in/yaml.v3 v3.0.1
 )
