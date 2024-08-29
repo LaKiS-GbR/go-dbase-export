@@ -1,7 +1,7 @@
 github.com/360EntSecGroup-Skylar/excelize v1.4.1 h1:l55mJb6rkkaUzOpSsgEeKYtS6/0gHwBYyfo5Jcjv/Ks=
 github.com/360EntSecGroup-Skylar/excelize v1.4.1/go.mod h1:vnax29X2usfl7HHkBrX5EvSCJcmH3dT9luvxzu8iGAE=
-github.com/Valentin-Kaiser/go-dbase v1.12.1 h1:xdcAmbFHTlxEd9Xv9uol2xv58QcYBC9KnRijurUIkOA=
-github.com/Valentin-Kaiser/go-dbase v1.12.1/go.mod h1:pCeAnnjp29dtr1cwC2F7hj+a1BKoAb5UgniNoekn6C4=
+github.com/Valentin-Kaiser/go-dbase v1.12.2 h1:l3p8Wl1BOqCtJU5tiX4NeNJ1+mbYfLYY1yb0M/dETOU=
+github.com/Valentin-Kaiser/go-dbase v1.12.2/go.mod h1:pCeAnnjp29dtr1cwC2F7hj+a1BKoAb5UgniNoekn6C4=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
