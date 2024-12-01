@@ -6,13 +6,6 @@
 
 This application is a simple tool to convert data from dBase/FoxPro databases to more modern formats. It can be operated in the CLI or via web interface. It is based on the free Golang library [go-dbase](github.com/Valentin-Kaiser/go-dbase) by LaKiS co-founder Valentin Kaiser.
 
-<table style="border:none;">
-  <tr>
-    <td><img src="https://mvz-bietigheim.de/wp-content/uploads/2017/10/placeholder-image4.jpg" width="480"/></td>
-    <td><img src="https://mvz-bietigheim.de/wp-content/uploads/2017/10/placeholder-image4.jpg" width="480"/></td>
-  </tr>
-</table>
-
 ## Build
 
 ```bash
